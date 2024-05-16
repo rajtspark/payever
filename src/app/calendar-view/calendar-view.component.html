@@ -1,0 +1,20 @@
+
+
+<div style="display: flex;">
+<div  class="example-list w_20"  style="border-radius: 5px 0px 0px 5px;">
+   <div class="example-box row"   *ngFor="let time of timeLine"  >
+      {{time}}
+   </div>
+ </div>
+  <div  class="example-list w_80" cdkDropList (cdkDropListDropped)="drop($event)" style="border-radius: 0px 5px 5px 0px;">
+   <div class="example-box row"  cdkDrag *ngFor="let time of timeLine" > 
+    <span class="pointer col-md-3" (click)="openEventLists(eventDate)" *ngFor="let eventDate of createdEventsList" [ngStyle]="{ 'backgroundColor': conditionOfDate(createdEventsList, time) ?  generateRandomColor() :'' }"  [ngClass]="eventDate.startTimeControl==time ? 'colorBg' : ''" ><span *ngIf="eventDate?.startTimeControl==time">Event Name: {{eventDate?.eventName}} 
+   </span>
+</span>
+   </div>
+ </div>
+</div> 
+
+
+
+

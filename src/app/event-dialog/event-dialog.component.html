@@ -1,0 +1,54 @@
+<div *ngIf="data.dialogType=='listEvent'">
+  <h1  style="display: flex; align-items: center; justify-content: space-between; font-size: 20px;
+  padding: 0 20px;"><span>Event Detail </span>
+  <div>
+  <span class="material-icons pointer" (click)="deleteEvent(data.eventData)" >delete
+  </span><span class="material-icons pointer" (click)="editEvent(data.eventData)" style="margin-left: 10px;">edit</span>
+  <span class="material-icons pointer" (click)="close()" style="margin-left: 10px;">close</span></div></h1>
+  <div mat-dialog-content >
+    <p><b>Date:</b> {{data.eventData.selectedDate}}</p>
+    <p><b>Event Name:</b> {{data.eventData.eventName}}</p>
+    <p><b>Time:</b>{{data.eventData.startTimeControl+':00' + ' to ' + data.eventData.endTimeControl+':00'}}</p> 
+  </div>
+  </div>
+
+  <div *ngIf="data.dialogType=='addEvent'">
+    <h1 mat-dialog-title>Add Event <span class="material-icons pointer" (click)="close()">close</span></h1>
+    
+
+    <form (submit)="createEventSubmit()" [formGroup]="eventForm">
+      <mat-form-field appearance="outline">
+        <mat-label>Event Name</mat-label>
+        <input matInput formControlName="eventName">
+      </mat-form-field>
+    <br>
+    <mat-form-field >
+      <input matInput formControlName="selectedDate" [matDatepicker]="dp2" placeholder="Select Date"
+        [min]="minDate"  (dateChange)="pickDateEvent()" [readonly]="true"
+        />
+      <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+      <mat-datepicker #dp2 ></mat-datepicker>
+    </mat-form-field>
+    <br>
+      <mat-form-field>
+        <mat-label>Select Start Time</mat-label>
+        <mat-select formControlName="startTimeControl" (selectionChange)="selectionStartTime()">
+          <mat-option *ngFor="let time of trimTimeLine('start')" [disabled]="!eventForm.get('selectedDate')?.value || time =='24'" [value]="time">{{ time }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="!eventForm.get('selectedDate')?.value">Select date first</mat-error>
+      </mat-form-field>
+    <br>
+      
+      <mat-form-field>
+        <mat-label>Select End Time</mat-label>
+        <mat-select formControlName="endTimeControl">
+          <mat-option *ngFor="let time of trimTimeLine('end')" [disabled]="true" [value]="time">{{ time }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="!eventForm.get('startTimeControl')?.value">Select start time first</mat-error>
+      </mat-form-field>
+      <br>
+
+      
+      <button mat-button color="primary" [disabled]="!eventForm.valid" *ngIf="!editMode" type="submit">Create</button>
+      <button mat-button color="primary" [disabled]="!eventForm.valid" *ngIf="editMode" type="submit">Update</button>
+    </form>

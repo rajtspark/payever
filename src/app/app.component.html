@@ -1,0 +1,13 @@
+<div style="padding-right: 20px;">
+<!-- date selected to view the event  -->
+<p>Selected date: {{selected | date: 'yyyy-MM-dd '}}</p>
+<!-- calendar to view the events previously listed  -->
+<mat-card class="demo-inline-calendar-card">
+    <mat-calendar (selectedChange)="viewDateChange($event)" [(selected)]="selected"></mat-calendar>
+  </mat-card>
+  <!-- to add new events -->
+<button (click)="addEvent()" style="margin-top: 20px;">Add Event</button>
+</div>
+<ng-container >
+<app-calendar-view [selectedDate]="selected" [createdEventsList]="createdEvents" ></app-calendar-view>
+</ng-container>
